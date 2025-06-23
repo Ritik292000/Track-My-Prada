@@ -1,12 +1,12 @@
-# Force detection of all relevant languages
 *.go linguist-language=Go
 *.js linguist-language=JavaScript
 *.html linguist-language=HTML
 *.css linguist-language=CSS
 
-# Explicitly mark folders as detectable
+# Force GitHub to analyze these folders
 IIIT-Project/** linguist-detectable=true
 Auto-App/** linguist-detectable=true
-public/** linguist-detectable=true
 templates/** linguist-detectable=true
 scripts/** linguist-detectable=true
+public/** linguist-detectable=true
+
