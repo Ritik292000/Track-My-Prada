@@ -2,3 +2,7 @@
 *.js linguist-language=JavaScript
 *.html linguist-language=HTML
 *.css linguist-language=CSS
+
+# If your JS is in a web/ or client/ folder that’s being ignored
+web/** linguist-detectable=true
+client/** linguist-detectable=true
