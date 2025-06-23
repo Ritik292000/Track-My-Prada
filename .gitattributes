@@ -1,22 +1,28 @@
-# Exclude Go dependency files from language detection
-go.sum linguist-vendored=true
-go.mod linguist-vendored=true
+# Exclude Go dependency files completely
+go.sum linguist-vendored=true linguist-generated=true
+go.mod linguist-documentation=true
 vendor/* linguist-vendored=true
+vendor/** linguist-vendored=true
 
-# Exclude other common dependency files
+# Exclude other dependency files
 package-lock.json linguist-vendored=true
 yarn.lock linguist-vendored=true
 node_modules/* linguist-vendored=true
+**/node_modules/* linguist-vendored=true
 
-# Force detection of your actual source files
-*.js linguist-detectable=true
-*.html linguist-detectable=true
-*.css linguist-detectable=true
-*.py linguist-detectable=true
+# Explicitly set languages for your files
+*.js linguist-language=JavaScript linguist-detectable=true
+*.html linguist-language=HTML linguist-detectable=true
+*.css linguist-language=CSS linguist-detectable=true
+*.py linguist-language=Python linguist-detectable=true
 
-# Force GitHub to analyze these folders
+# Force analyze these directories
 IIIT-Project/** linguist-detectable=true
 Auto-App/** linguist-detectable=true
 templates/** linguist-detectable=true
 scripts/** linguist-detectable=true
 public/** linguist-detectable=true
+
+# If you have specific files, force them
+*.jsx linguist-language=JavaScript
+*.tsx linguist-language=TypeScript
