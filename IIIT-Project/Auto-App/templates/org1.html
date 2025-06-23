@@ -1,0 +1,184 @@
+{{template "header.html"}}
+
+<head>
+
+    <div class="px-3 py-2 bg-secondary text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a type="button" class="btn btn-success filled " onClick="getEvent()" class="nav-link text-white">
+                    Notifications
+                </a>
+                <a type="button" class="btn btn-danger filled marginLeft " href="/" class="nav-link text-white">
+                    Go Back
+                </a>
+
+            </div>
+        </div>
+    </div>
+</head>
+</br>
+<div class="jumbotron jumbotronManufacturer jumbotron-fluid">
+</div>
+</br>
+<div class="container-fluid">
+    <div class="row rowBox">
+        <div class="col-md-3 col-sm-12"></div>
+
+        <div class="col-md-6 col-sm-12">
+
+            <div class="card card-shadow">
+                <div class="card-header" style="background-InvoiceDate:rgb(71, 129, 255)">
+                    <legend class="text-center" data-bs-toggle="collapse" href="#collapseQueryAdd" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">Add a new Prada</legend>
+                </div>
+                <div class="form-modal">
+                    <div class="card-body collapse" id="collapseQueryAdd">
+                        <form id="manForm">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12" class="form-group">
+                                    <a>Prada Id</a>
+                                    <label for="AssetId" class="form-label mt-4"></label>
+                                    <input type="text" class="form-control" id="AssetId" aria-describedby="AssetId"
+                                    >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12" class="form-group">
+                                    <a>GST Number</a>
+                                    <label for="GSTIN" class="form-label mt-4"></label>
+                                    <input type="text" class="form-control" id="GSTIN" aria-describedby="GSTIN"
+                                        >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12" class="form-group">
+                                    <a>Quantity</a>
+                                    <label for="Quantity" class="form-label mt-4"></label>
+                                    <input type="text" class="form-control" id="Quantity" aria-describedby="Quantity"
+                                       >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12" class="form-group">
+                                    <a>Invoice Date</a>
+                                    <label for="InvoiceDate" class="form-label mt-4"></label>
+                                    <input type="date" class="form-control" id="InvoiceDate" aria-describedby="InvoiceDate"
+                                        >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12" class="form-group">
+                                    <a>Weight</a>
+                                    <label for="Weight" class="form-label mt-4"></label>
+                                    <input type="text" class="form-control" id="Weight"
+                                        aria-describedby="Weight" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12" class="form-group">
+                                    <a>Status</a>
+                                    <label for="Status" class="form-label mt-4"></label>
+                                    <input type="text" class="form-control" id="Status"
+                                        aria-describedby="Status" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12" class="form-group">
+                                    <a>Destination</a>
+                                    <label for="Destination" class="form-label mt-4"></label>
+                                    <input type="text" class="form-control" id="Destination"
+                                        aria-describedby="Destination" >
+                                </div>
+                            </div>
+                            </br>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <button type="button" onclick="addPradaData(event)"
+                                        class="btn btn-secondary rounded-pill">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+        </div>
+
+    </div>
+</div>
+</br>
+<div class="container-fluid">
+    <div class="row rowBox">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+                    <form>
+                        <div class="row .navbar-brand">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <a>Prada Id</a>
+                                <label for="queryPradaId" class="form-label mt-4"></label>
+                                <input type="text" class="form-control" id="queryPradaId" aria-describedby="queryPradaId"
+                                    placeholder="001">
+                            </div>
+                        </div>
+                        </br>
+                        <button type="submit" onclick="readProductData(event)"
+                            class="btn btn-fill btn-secondary rounded-pill">Submit</button></br>
+                    </form>
+
+        </div>
+        <div class="col-md-3 col-sm-12"></div>
+    </div>
+</div>
+</br>
+
+<div class="container-fluid">
+    <div class="row rowBox">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header" style="background-color:rgb(50, 201, 78)">
+                    <legend class="text-center">Available prada</legend>
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="table" style="width:100%">
+                            <thead id="colored-table">
+                              <th>AssetId</th>
+                              <th>AssetType</th>
+                              <th>Quantity</th>
+                              <th>InvoiceDate</th>
+                              <th>Weight</th>
+                              <th>Status</th>
+                              <th>Destination</th>
+                              <th> </th>
+                            </thead>
+                            <tbody>
+                
+                              {{range .AssetList}}
+                              <tr>
+                                <td>{{.AssetId}}</td>
+                                <td>{{.AssetType}}</td>
+                                <td>{{.Quantity}}</td>
+                                <td>{{.InvoiceDate}}</td>
+                                <td>{{.Weight}}</td>
+                                <td>{{.Status}}</td>
+                                <td>{{.Destination}}</td>
+                
+                              </tr>
+                              {{end}}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12"></div>
+
+    </div>
+</div>
+</br>
+
+
+{{template "footer.html"}}

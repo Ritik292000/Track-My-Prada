@@ -1,0 +1,268 @@
+Copy the following code to install the script file.
+curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh
+
+To change it to executable format run the code below:
+chmod +x installfabric.sh 
+
+Now the script file is in executable format. Run the following code to execute the script file: 
+./install-fabric.sh 
+
+Copy the binaries to usr/local/bin using this command:
+sudo cp fabric-samples/bin/* /usr/local/bin
+
+cd fabric-samples/test-network/
+./network.sh up createChannel -c mychannel -ca -s couchdb
+
+./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go -ccl go
+
+
+
+
+
+
+To interact with the chaincode execute the below commands:
+export PATH=${PWD}/../bin:$PATH
+PATH- location of binaries
+
+export FABRIC_CFG_PATH=$PWD/../config/
+
+FABRIC_CFG_PATH - location of config file
+
+export CORE_PEER_TLS_ENABLED=true
+
+CORE_PEER_TLS_ENABLED - This variable is used to enable TLS communication for peer
+
+export CORE_PEER_LOCALMSPID="Org1MSP"
+
+CORE_PEER_LOCALMSPID - Name of the MSPID
+
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+CORE_PEER_TLS_ROOTCERT_FILE - Path of TLS Rootcert file
+
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+
+CORE_PEER_MSPCONFIGPATH - Path of MSP
+
+export CORE_PEER_ADDRESS=localhost:7051
+
+CORE_PEER_ADDRESS - port where the peer can be accessed.
+
+Once the environment is set now it’s time to use the peer binary to invoke a function “initLedger” in the chaincode.
+
+To invoke the chaincode use the following command,
+
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
+
+Init Ledger Function will define pre-defined assets to the network.
+
+Now let’s query the asset available, use the following command to query the complete assets.
+
+peer chaincode query -C mychannel -n basic -c '{"Args":["GetAllAssets"]}'
+
+To Read a single asset execute the following command:
+
+peer chaincode query -C mychannel -n basic -c '{"function":"ReadAsset","Args":["asset5"]}'
+
+To Transfer an Asset execute the following command:
+
+ peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"TransferAsset","Args":["asset2","minal"]}'
+ 
+ ----------------------------------------------------------------------------------START FROM HERE------------------------------------------------------------------------------------
+ 
+ pradachannel
+
+To stop the network execute the following command:
+./network.sh down
+
+To bring UP network
+./network.sh up createChannel -c pradachannel -ca -s couchdb
+
+cd addOrg3
+./addOrg3.sh up -c pradachannel -ca -s couchdb
+
+
+
+DEPLOY CHAINCODE
+./network.sh deployCC -ccn PRADA_CHAINCODE - -ccp ../../Prada/Chaincode/ -ccl go -c pradachannel
+
+#General Environment variables:
+
+export FABRIC_CFG_PATH=$PWD/../config/
+
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+export ORG1_PEER_TLSROOTCERT=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+export ORG2_PEER_TLSROOTCERT=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+export CORE_PEER_TLS_ENABLED=true
+
+
+#Environment variables for Org1:
+
+export CORE_PEER_LOCALMSPID=Org1MSP
+
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+
+export CORE_PEER_ADDRESS=localhost:7051
+
+
+Invoke - CreatePRADA:
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C pradachannel -n PRADA_CHAINCODE --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT -c '{"function":"CreateAsset","Args":["ASSET-01", "IN0-9876-87654", "2", "22-03-2002", "21KG", "Undelivered" ,"IN warehouse"]}'
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["ReadAsset", "ASSET-01"]}'
+
+
+
+
+Invoke - CreateAsset
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C pradachannel -n PRADA_CHAINCODE --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT -c '{"function":"CreateAsset","Args":["Asset-03", "IN0-9876-87654", "2", "22-03-2002", "21KG", "Undelivered" ,"IN warehouse" ]}'
+
+Query - ReadAsset
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["ReadAsset", "ASSET-01"]}'
+
+Deploy chaincode with UPDATED CHAINCODE:
+./network.sh deployCC -ccn PRADA_CHAINCODE -ccp ../../Prada/Chaincode/ -ccl go -c pradachannel -ccv 2.0 -ccs 2
+
+
+
+---------------------------------------------------------------IMPORTANT-------------------------------------------
+
+NOW WE NEED TO GIVE GENERAL ENV and ORG1 or ORG2 ENVs:..................
+
+then perform INVOKE or QUERY.......................
+------------------------------------------------------------------------------------------------------------------
+
+
+
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C pradachannel -n PRADA_CHAINCODE --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT -c '{"function":"CreateAsset","Args":["Asset-02", "IN1-9876-87654", "3", "9-03-2002", "21KG", "Undelivered" ,"IN warehouse"]}'
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["ReadAsset", "Asset-02"]}'
+
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C pradachannel -n PRADA_CHAINCODE --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT -c '{"function":"DeleteAsset","Args":["Asset-02"]}'
+
+
+
+
+
+
+---------------------------PDC------------------------------------
+
+To stop the network execute the following command:
+./network.sh down
+
+To bring UP network
+./network.sh up createChannel -c pradachannel -ca -s couchdb
+
+cd addOrg3
+./addOrg3.sh up -c pradachannel -ca -s couchdb
+
+
+FOR FRESH DEPLOY:
+./network.sh deployCC -ccn PRADA_CHAINCODE -ccp ../../Prada/Chaincode/ -ccl go -c pradachannel -cccg ../../Prada/Chaincode/collections.json
+
+
+
+Deploy chaincode with collections file as an upgrade
+./network.sh deployCC -ccn PRADA_CHAINCODE -ccp ../../Prada/Chaincode/ -ccl go -c pradachannel -ccv 1.0.1 -ccs 2 -cccg ../../Prada/Chaincode/collections.json
+
+
+
+General Environment variables:
+
+export FABRIC_CFG_PATH=$PWD/../config/
+
+export ORDERER_CA=${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+export ORG1_PEER_TLSROOTCERT=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+export ORG2_PEER_TLSROOTCERT=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+export CORE_PEER_TLS_ENABLED=true
+
+
+
+
+Environment variables for Org1:
+
+export CORE_PEER_LOCALMSPID=Org1MSP
+
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+
+export CORE_PEER_ADDRESS=localhost:7051
+
+
+Invoke - CreatePRADA:
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C pradachannel -n PRADA_CHAINCODE --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT -c '{"function":"CreateAsset","Args":["ASSET-01", "IN0-9876-87654", "2", "22-03-2002", "21KG","IN warehouse","Undelivered"]}'
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["ReadAsset", "ASSET-01"]}'
+
+
+
+
+#Invoke - CreateAsset
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C pradachannel -n PRADA_CHAINCODE --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT -c '{"function":"CreateAsset","Args":["Asset-03", "IN0-9876-87654", "2", "22-03-2002", "21KG", "Undelivered" ,"IN warehouse" ]}'
+
+#Query - ReadAsset
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["ReadAsset", "ASSET-01"]}'
+
+
+
+#Environment variables for Org2:
+export CORE_PEER_LOCALMSPID=Org2MSP
+
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+
+export CORE_PEER_ADDRESS=localhost:9051
+
+#Export order details
+export QUANTITY=$(echo -n "2" | base64 | tr -d \\n)
+
+export STATUS=$(echo -n "ready" | base64 | tr -d \\n)
+
+export DOO=$(echo -n "22-09-2004" | base64 | tr -d \\n)
+
+export DLR_NAME=$(echo -n "prabhat" | base64 | tr -d \\n)
+
+#Invoke - CreateOrder
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA -C pradachannel -n PRADA_CHAINCODE --peerAddresses localhost:7051 --tlsRootCertFiles $ORG1_PEER_TLSROOTCERT --peerAddresses localhost:9051 --tlsRootCertFiles $ORG2_PEER_TLSROOTCERT -c '{"Args":["OrderContract:CreateOrder","ORD-01"]}' --transient "{\"Quantity\":\"$QUANTITY\",\"Status\":\"$STATUS\",\"DateOfOrder\":\"$DOO\",\"DealerName\":\"$DLR_NAME\"}"
+
+
+#Query - ReadOrder
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["OrderContract:ReadOrder","ORD-01"]}'
+
+-------------Rich Query---------------------------------------------------------------------------------------- 
+
+#Get Query-
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["GetAllAssets"]}'
+
+
+#Range query:
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["GetAssetByRange", "Asset-01", "Asset-02"]}'
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["GetAssetByRange", "Asset-02", ""]}'
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["GetAssetByRange", "", "Asset-01"]}'
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["GetAssetByRange", "", ""]}'
+
+#Pagination Query
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["GetAssetWithPagination", "2", ""]}'
+
+#History Query
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["GetAssetHistory", "Asset-02"]}'
+
+#Query - Order
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["OrderContract:GetAllOrders"]}'
+
+peer chaincode query -C pradachannel -n PRADA_CHAINCODE -c '{"Args":["OrderContract:GetOrdersByRange", "ORD-01", "ORD-03"]}'

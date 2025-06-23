@@ -1,0 +1,155 @@
+{{template "header.html"}}
+
+<div class="px-3 py-2 bg-secondary text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <h2 href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <svg class="bi d-block mx-auto mb-1 " width="24" height="24"></svg>
+                {{.title}}
+            </h2>
+            <a type="button" class="btn btn-danger filled" href="/" class="nav-link text-white">
+                Go Back
+            </a>
+        </div>
+    </div>
+</div>
+<br />
+</br>
+<div class="container-fluid">
+    <div class="row rowBox">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+            <div class="card card-shadow">
+                <div class="card-header" style="background-InvoiceDate:teal">
+                    <legend class="text-center" data-bs-toggle="collapse" href="#collapseRaise" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">Raise new order</legend></br>
+                </div>
+                <div class="card-body collapse" id="collapseRaise">
+                    <form id="disForm">
+                        <div class="row .navbar-brand ">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <a>Order Number</a>
+                                <label for="OrderID" class="form-label mt-4"></label>
+                                <input type="text" class="form-control" id="OrderID" aria-describedby="OrderID"
+                                    >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <a>Quantity</a>
+                                <label for="Quantity" class="form-label mt-4"></label>
+                                <input type="text" class="form-control" id="Quantity" aria-describedby="Quantity"
+                                    >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <a>Status</a>
+                                <label for="Status" class="form-label mt-4"></label>
+                                <input type="text" class="form-control" id="Status" aria-describedby="Status"
+                                >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <a>DateOfOrder</a>
+                                <label for="DateOfOrder" class="form-label mt-4"></label>
+                                <input type="date" class="form-control" id="DateOfOrder" aria-describedby="DateOfOrder"
+                                    >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <a>DealerName</a>
+                                <label for="DealerName" class="form-label mt-4"></label>
+                                <input type="text" class="form-control" id="DealerName" aria-describedby="DealerName"
+                                  >
+                            </div>
+                        </div>
+                        </br>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <button type="submit" onclick="addOrder(event)"
+                                    class="btn btn-fill btn-secondary rounded-pill">Raise Order</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12"></div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row rowBox">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+            <div class="card card-shadow">
+                <div class="card-header" style="background-InvoiceDate:teal">
+                    <legend class="text-center" data-bs-toggle="collapse" href="#collapseQueryReadOrder" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">Check Order</legend>
+                </div>
+                <div class="card-body collapse" id="collapseQueryReadOrder">
+                    <form>
+                        <div class="row .navbar-brand">
+                            <div class="col-md-12 col-sm-12" class="form-group">
+                                <a>Order Number</a>
+                                <label for="ordNum" class="form-label mt-4"></label>
+                                <input type="text" class="form-control" id="ordNum" aria-describedby="ordNum"
+                                    placeholder="A71">
+                            </div>
+                        </div>
+                        </br>
+                        <button type="submit" onclick="readOrder(event)"
+                            class="btn btn-fill btn-secondary rounded-pill">Submit</button></br>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12"></div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row rowBox">
+        <div class="col-md-3 col-sm-12"></div>
+        <div class="col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header" style="background-color:rgb(50, 201, 78)">
+                    <legend class="text-center">Available Orders</legend>
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="table" style="width:100%">
+                            <thead id="colored-table">
+                              <th>AssetType</th>
+                              <th>Quantity</th>
+                              <th>Status</th>
+                              <th>DateOfOrder</th>
+                              <th>DealerName</th>
+                              <th>OrderID</th>
+                            </thead>
+                            <tbody>
+                
+                              {{range .orderList}}
+                              <tr>
+                                <td>{{.AssetType}}</td>
+                                <td>{{.Quantity}}</td>
+                                <td>{{.Status}}</td>
+                                <td>{{.DateOfOrder}}</td>
+                                <td>{{.DealerName}}</td>
+                                <td>{{.OrderID}}</td>
+                              </tr>
+                              {{end}}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12"></div>
+
+    </div>
+</div>
+</br>
+{{template "footer.html"}}
