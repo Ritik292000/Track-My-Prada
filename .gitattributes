@@ -1,20 +1,18 @@
-# Exclude large dependency files from language stats
+# Exclude Go dependency files from language detection
 go.sum linguist-vendored=true
 go.mod linguist-vendored=true
+vendor/* linguist-vendored=true
+
+# Exclude other common dependency files
 package-lock.json linguist-vendored=true
 yarn.lock linguist-vendored=true
-
-# Mark vendor directories as vendored
-vendor/* linguist-vendored=true
 node_modules/* linguist-vendored=true
-**/node_modules/* linguist-vendored=true
 
-# Force detection of your source files
+# Force detection of your actual source files
 *.js linguist-detectable=true
 *.html linguist-detectable=true
 *.css linguist-detectable=true
 *.py linguist-detectable=true
-*.go linguist-detectable=true
 
 # Force GitHub to analyze these folders
 IIIT-Project/** linguist-detectable=true
