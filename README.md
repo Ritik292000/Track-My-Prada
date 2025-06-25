@@ -11,4 +11,5 @@ Consumers can view the product’s lifecycle from raw material sourcing to final
 - **Personalized assignment based on customer requirements**
 - **Sustainability and ethical sourcing information**
 
-This ensures a transparent supply chain for ethically sourced products — benefiting both brands and consumers.
+This ensures a transparent supply chain for ethically sourced products — benefiting both brands and consumers .
+
